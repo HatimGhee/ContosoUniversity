@@ -30,7 +30,7 @@ namespace ContosoUniversity.Pages.Students
                 return NotFound();
             }
 
-            var student =  await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            var student =  await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
@@ -41,17 +41,22 @@ namespace ContosoUniversity.Pages.Students
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            var emptyStudent = new Student();
+            var studentToUpdate = await _context.Students.FindAsync(id);
+
+            if (studentToUpdate == null)
+            {
+                return NotFound();
+            }
+
             if (await TryUpdateModelAsync<Student>(
-                emptyStudent,
+                studentToUpdate,
                 "student",
                 s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
             {
-                _context.Students.Add(emptyStudent);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("./Index");
+                return RedirectToPage("./Index");
             }
 
             return Page();
