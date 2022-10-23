@@ -12,9 +12,9 @@ namespace ContosoUniversity.Pages.Students
 {
     public class CreateModel : PageModel
     {
-        private readonly ContosoUniversity.Data.StudentContext _context;
+        private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public CreateModel(ContosoUniversity.Data.StudentContext context)
+        public CreateModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }

@@ -12,9 +12,9 @@ namespace ContosoUniversity.Pages.Students
 {
     public class IndexModel : PageModel
     {
-        private readonly ContosoUniversity.Data.StudentContext _context;
+        private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public IndexModel(ContosoUniversity.Data.StudentContext context)
+        public IndexModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }
