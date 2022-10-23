@@ -43,30 +43,19 @@ namespace ContosoUniversity.Pages.Students
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            var emptyStudent = new Student();
+            if (await TryUpdateModelAsync<Student>(
+                emptyStudent,
+                "student",
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
             {
-                return Page();
-            }
-
-            _context.Attach(Student).State = EntityState.Modified;
-
-            try
-            {
+                _context.Students.Add(emptyStudent);
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(Student.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("./Index");
             }
 
-            return RedirectToPage("./Index");
+            return Page();
+
         }
 
         private bool StudentExists(int id)
