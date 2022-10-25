@@ -23,10 +23,10 @@
                 @Html.DisplayNameFor(model => model.Department[0].StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Department[0].ConcurrencyToken)
+                @Html.DisplayNameFor(model => model.Department[0].Administrator)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Department[0].Administrator)
+                Token
             </th>
             <th></th>
         </tr>
@@ -38,16 +38,16 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Budget)
+                @item.Budget
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ConcurrencyToken)
+                @Html.DisplayFor(modelItem => item.Administrator.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Administrator.FirstMidName)
+                @Utils.Utility.GetLastChars(item.ConcurrencyToken)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.DepartmentID">Edit</a> |
