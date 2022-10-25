@@ -21,11 +21,13 @@ namespace ContosoUniversity.Pages.Courses
 
         public IActionResult OnGet()
         {
+        ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
             return Page();
         }
 
         [BindProperty]
         public Course Course { get; set; }
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
