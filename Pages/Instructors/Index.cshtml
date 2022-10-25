@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model ContosoUniversity.Pages.Instructors.IndexModel
 
 @{
@@ -13,21 +13,22 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor[0].LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor[0].FirstMidName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor[0].HireDate)
-            </th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Hire Date</th>
+            <th>Office</th>
+            <th>Courses</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.Instructor) {
-        <tr>
+    @foreach (var item in Model.InstructorIndexData.Instructors) {
+        string selectedRow = "";
+        if (item.ID == Model.InstructorID)
+        {
+            selectedRow = "table-success";
+        }
+        <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
@@ -38,6 +39,21 @@
                 @Html.DisplayFor(modelItem => item.HireDate)
             </td>
             <td>
+                @if (item.OfficeAssignment != null)
+                {
+                    @item.OfficeAssignment.Location
+                }
+            </td>
+            <td>
+                @{
+                    foreach (var course in item.Courses)
+                    {
+                        @course.CourseID @: @course.Title <br/>
+                    }
+                }
+            </td>
+            <td>
+                <a asp-page="./Index" asp-route-id="@item.ID">Select</a> |
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
@@ -46,3 +62,39 @@
     }
     </tbody>
 </table>
+
+@if (Model.InstructorIndexData.Courses != null)
+{
+    <h3>Courses Taught by Selected Instructor</h3>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>Number</th>
+            <th>Title</th>
+            <th>Department</th>
+        </tr>
+
+        @foreach (var item in Model.InstructorIndexData.Courses)
+        {
+            string selectedRow = "";
+            if (item.CourseID == Model.CourseID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    <a asp-page="./Index" asp-route-courseID="@item.CourseID">Select</a>
+                </td>
+                <td>
+                    @item.CourseID
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Department.Name
+                </td>
+            </tr>
+        }
+    </table>
+}
