@@ -28,7 +28,12 @@ namespace ContosoUniversity.Pages.Instructors
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.ID == id);
+            var instructor = await _context.Instructors
+                .AsNoTracking()
+                .Include(i => i.Courses)
+                .Include(i => i.OfficeAssignment)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
             if (instructor == null)
             {
                 return NotFound();

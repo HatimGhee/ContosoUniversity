@@ -29,7 +29,9 @@ namespace ContosoUniversity.Pages.Instructors
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.ID == id);
+            var instructor = await _context.Instructors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (instructor == null)
             {
@@ -48,14 +50,25 @@ namespace ContosoUniversity.Pages.Instructors
             {
                 return NotFound();
             }
-            var instructor = await _context.Instructors.FindAsync(id);
 
-            if (instructor != null)
+            Instructor instructor = await _context.Instructors
+                .Include(i => i.Courses)
+                .SingleAsync(i => i.ID == id);
+
+            if (instructor == null)
             {
-                Instructor = instructor;
-                _context.Instructors.Remove(Instructor);
-                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+
             }
+
+            var departments = await _context.Departments
+                .Where(d => d.InstructorID == id)
+                .ToListAsync();
+
+            departments.ForEach(d => d.InstructorID = null);
+
+            _context.Instructors.Remove(instructor);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
