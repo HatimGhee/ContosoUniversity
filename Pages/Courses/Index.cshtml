@@ -29,7 +29,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Courses) {
+    @foreach (var item in Model.Courses) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CourseID)
@@ -49,6 +49,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.CourseID">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
